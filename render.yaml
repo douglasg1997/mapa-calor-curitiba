@@ -1,0 +1,14 @@
+# Render Blueprint – site estático com o mapa (docs/index.html)
+# Os dados em tempo real não passam pelo Render: o mapa lê tempo_real.json direto do branch "tempo-real" do GitHub.
+services:
+  - type: web
+    name: mapa-calor-curitiba
+    runtime: static
+    branch: main
+    buildCommand: ""
+    staticPublishPath: ./docs
+    autoDeploy: true
+    headers:
+      - path: /*
+        name: Cache-Control
+        value: no-cache
