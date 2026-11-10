@@ -699,19 +699,94 @@
   #tr-lista tr { cursor: pointer; } #tr-lista tr:hover { background: #f5f5f5; }
   #tr-lista td.n { text-align: right; white-space: nowrap; }
   .tr-tip { font-size: 10.5px; font-weight: 700; padding: 1px 4px; }
-  .rodape { position: absolute; left: 10px; bottom: 26px; z-index: 900; max-width: 520px; font-size: 10px; color: #444;
+  .rodape { position: absolute; left: 340px; bottom: 26px; z-index: 900; max-width: min(520px, calc(100vw - 640px)); font-size: 10px; color: #444;
             background: rgba(255,255,255,.85); padding: 4px 8px; border-radius: 4px; }
+
+  /* ---------- Desktop: painel e legenda rolam em telas baixas; legenda recolhível ---------- */
+  #rodape-cab { cursor: pointer; user-select: none; font-weight: 600; color: #555; }
+  #rodape-txt { margin-top: 3px; }
+  .rodape.fechado #rodape-txt { display: none; }
+  .painel-principal { max-height: calc(100vh - 130px); overflow-y: auto; overscroll-behavior: contain; }
+  .legenda { max-height: calc(100vh - 60px); overflow-y: auto; overscroll-behavior: contain; }
+  .leg-cab { display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; user-select: none;
+             font-weight: 700; font-size: 12px; color: #333; }
+  .leg-cab .seta { font-size: 11px; color: #777; }
+  .leg-corpo { margin-top: 6px; }
+  .legenda.fechada .leg-corpo { display: none; }
+  .leg-faixa { display: none; margin-top: 5px; }
+  .legenda.fechada .leg-faixa { display: block; }
+  .leg-faixa .cores { display: flex; height: 10px; border: 1px solid rgba(0,0,0,.25); position: relative; }
+  .leg-faixa .cores span { flex: 1; }
+  .leg-faixa .rot { display: flex; justify-content: space-between; gap: 6px; font-size: 10px; color: #555; margin-top: 2px; white-space: nowrap; }
+  /* ícone do seletor de camadas embutido (o leaflet.css aponta para images/layers.png, que não existe no arquivo único) */
+  .leaflet-control-layers-toggle { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='1.8' stroke-linejoin='round'%3E%3Cpath d='M12 3 2 8.5 12 14l10-5.5z'/%3E%3Cpath d='m2 12.5 10 5.5 10-5.5'/%3E%3Cpath d='m2 16.5 10 5.5 10-5.5'/%3E%3C/svg%3E") !important;
+                                  background-size: 24px 24px !important; background-repeat: no-repeat; background-position: center; }
+  .fontes-movel, #folha { display: none; }
+
+  /* ---------- Celular / tela estreita: mapa em cima, painel como gaveta embaixo ---------- */
+  body.movel { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+  body.movel #map { position: relative; inset: auto; flex: 1 1 auto; min-height: 0; }
+  body.movel .rodape { display: none; }
+  body.movel #folha { display: flex; flex-direction: column; flex: 0 0 auto; max-height: 52vh; max-height: 52dvh; background: #fff;
+                      box-shadow: 0 -2px 12px rgba(0,0,0,.25); border-radius: 14px 14px 0 0; z-index: 1000; position: relative;
+                      padding-bottom: env(safe-area-inset-bottom); }
+  body.movel #folha.recolhida #folha-corpo { display: none; }
+  #folha-cab { flex: none; padding: 6px 12px 8px; border-bottom: 1px solid #eee; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+  #folha-cab .alca { width: 40px; height: 4px; border-radius: 2px; background: #c8c8c8; margin: 0 auto 6px; }
+  #folha-cab .linha { display: flex; align-items: center; gap: 8px; }
+  #folha-resumo { flex: 1; min-width: 0; font-size: 12.5px; line-height: 1.3; color: #222; }
+  #folha-resumo b { color: #b71c1c; }
+  #folha-cab button { flex: none; height: 36px; min-width: 36px; border: 1px solid #ccc; background: #f5f5f5; border-radius: 6px;
+                      font-size: 14px; font-weight: bold; padding: 0 8px; color: #333; }
+  #folha-cab button#fh-abrir { background: #b71c1c; border-color: #b71c1c; color: #fff; font-size: 12px; }
+  #folha-corpo { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; -webkit-overflow-scrolling: touch; }
+  body.movel .painel-principal { float: none; width: auto; box-shadow: none; border-radius: 0; max-height: none; overflow: visible; margin: 0 !important;
+                                 min-width: 0 !important; max-width: none !important; font-size: 13px; padding: 10px 14px 14px; }
+  body.movel .painel-principal h3 { display: none; }
+  body.movel .painel-principal select { font-size: 16px; padding: 8px; }
+  body.movel .seg button { padding: 9px 4px; font-size: 13px; }
+  body.movel .linha-hora button { height: 38px; min-width: 40px; font-size: 15px; }
+  body.movel .linha-hora input[type=range] { height: 32px; }
+  body.movel .caixa label { padding: 5px 0; }
+  body.movel .caixa input[type=checkbox] { width: 18px; height: 18px; }
+  body.movel table.est { font-size: 12px; }
+  body.movel #tr-lista { max-height: none; }
+  body.movel #tr-lista td { padding: 6px 2px; font-size: 12px; }
+  body.movel .tr-status button { padding: 6px 12px; font-size: 13px; }
+  body.movel .fontes-movel { display: block; font-size: 10.5px; color: #666; margin-top: 10px; border-top: 1px solid #eee; padding-top: 8px; }
+  body.movel .dica { font-size: 11.5px; }
+  body.movel .legenda { min-width: 0; max-width: none; max-height: none; overflow: visible; float: none; margin: 0 14px 14px !important;
+                        box-shadow: none; border: 1px solid #e6e6e6; padding: 8px 10px; }
+  #fh-faixa .leg-faixa { display: block; margin-top: 6px; }
+  body.movel .legenda .leg-corpo .sub { display: none; }
+  body.movel .pop { min-width: 0; font-size: 12px; }
+  body.movel .leaflet-popup-content { margin: 10px 12px; }
+  body.movel .leaflet-control-scale { display: none; }
+  /* celular deitado: gaveta vira coluna lateral */
+  @media (orientation: landscape) and (max-height: 500px) {
+    body.movel { flex-direction: row; }
+    body.movel #folha { max-height: none; height: 100%; width: 330px; max-width: 48vw; border-radius: 0; order: 2;
+                        box-shadow: -2px 0 12px rgba(0,0,0,.25); padding-bottom: 0; padding-right: env(safe-area-inset-right); }
+    body.movel #folha.recolhida { position: absolute; right: 0; bottom: 0; height: auto; border-radius: 14px 0 0 0; }
+  }
 </style>
 </head>
 <body>
 <div id="map"></div>
 <div id="carregando">Carregando dados do mapa…</div>
-<div class="rodape" id="rodape"></div>
+<div class="rodape" id="rodape"><div id="rodape-cab">ℹ️ Fontes e método <span id="rodape-seta">▸</span></div><div id="rodape-txt"></div></div>
+<div id="folha">
+  <div id="folha-cab"><div class="alca"></div>
+    <div class="linha"><div id="folha-resumo">Carregando…</div>
+      <button id="fh-prev" title="Hora anterior">◀</button><button id="fh-next" title="Próxima hora">▶</button>
+      <button id="fh-abrir">Fechar</button></div><div id="fh-faixa"></div></div>
+  <div id="folha-corpo"></div>
+</div>
 
 <script id="meta" type="application/json">{"x0":661980,"y0":7195620,"res":30,"ncol":687,"nrow":1100,"lon0":-51,"supersample":2,"bounds":[[-25.6451975231413,-49.3903831255454],[-25.3449295578923,-49.1811754511502]],"horas":["09h","10h","11h","12h","13h","14h","15h","16h","17h"],"datas":[{"id":"2026-12-21","nome":"Verão (Solstício – 21/12)","icone":"☀️","resumo":[{"horario":"09h","altitude_solar_graus":45.78,"azimute_solar_graus":98.22},{"horario":"10h","altitude_solar_graus":59.25,"azimute_solar_graus":93.57},{"horario":"11h","altitude_solar_graus":72.78,"azimute_solar_graus":87.34},{"horario":"12h","altitude_solar_graus":86,"azimute_solar_graus":60.93},{"horario":"13h","altitude_solar_graus":79.63,"azimute_solar_graus":278.7},{"horario":"14h","altitude_solar_graus":66.12,"azimute_solar_graus":269.2},{"horario":"15h","altitude_solar_graus":52.61,"azimute_solar_graus":264.07},{"horario":"16h","altitude_solar_graus":39.2,"azimute_solar_graus":259.6},{"horario":"17h","altitude_solar_graus":25.99,"azimute_solar_graus":255.04}],"clima":{"medio":[{"ta":21.307,"ur":85.194,"global":367.173,"difusa":235.709,"direta_normal":195.853,"emissiv_ceu":0.921,"n_dias":294,"vento":1.893,"tnw":19.425,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":22.692,"ur":79.847,"global":492.963,"difusa":286.247,"direta_normal":251.086,"emissiv_ceu":0.915,"n_dias":294,"vento":2.098,"tnw":20.051,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":23.84,"ur":75.252,"global":579.003,"difusa":323.285,"direta_normal":275.007,"emissiv_ceu":0.911,"n_dias":294,"vento":2.219,"tnw":20.498,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":24.72,"ur":71.537,"global":618.867,"difusa":344.454,"direta_normal":278.904,"emissiv_ceu":0.91,"n_dias":294,"vento":2.368,"tnw":20.777,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":25.305,"ur":69.007,"global":609.643,"difusa":344.164,"direta_normal":271.185,"emissiv_ceu":0.91,"n_dias":294,"vento":2.419,"tnw":20.929,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":25.659,"ur":67.983,"global":564.344,"difusa":328.672,"direta_normal":256.908,"emissiv_ceu":0.911,"n_dias":294,"vento":2.421,"tnw":21.078,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":25.531,"ur":68.66,"global":453.327,"difusa":281.203,"direta_normal":214.762,"emissiv_ceu":0.918,"n_dias":294,"vento":2.459,"tnw":21.038,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":24.91,"ur":71.391,"global":338.177,"difusa":216.394,"direta_normal":190.334,"emissiv_ceu":0.923,"n_dias":294,"vento":2.574,"tnw":20.846,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":23.929,"ur":75.531,"global":203.721,"difusa":147.43,"direta_normal":127.222,"emissiv_ceu":0.934,"n_dias":294,"vento":2.567,"tnw":20.532,"ta_ref_lst":26.15,"g_ref_lst":712.75}],"quente":[{"ta":24.106,"ur":80.656,"global":548.625,"difusa":233.165,"direta_normal":465.782,"emissiv_ceu":0.893,"n_dias":32,"vento":1.493,"tnw":21.546,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":26.15,"ur":72.375,"global":712.75,"difusa":255.565,"direta_normal":551.246,"emissiv_ceu":0.887,"n_dias":32,"vento":1.714,"tnw":22.331,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":27.938,"ur":64.188,"global":846.156,"difusa":253.105,"direta_normal":635.558,"emissiv_ceu":0.878,"n_dias":32,"vento":1.962,"tnw":22.763,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":29.288,"ur":57.344,"global":897.781,"difusa":262.552,"direta_normal":645.735,"emissiv_ceu":0.873,"n_dias":32,"vento":2.148,"tnw":22.888,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":30.359,"ur":52.125,"global":894.656,"difusa":258.283,"direta_normal":651.596,"emissiv_ceu":0.869,"n_dias":32,"vento":2.182,"tnw":22.938,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":31.031,"ur":49.406,"global":794.062,"difusa":276.667,"direta_normal":566.262,"emissiv_ceu":0.873,"n_dias":32,"vento":2.166,"tnw":23.024,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":31.319,"ur":48.656,"global":660.938,"difusa":253.187,"direta_normal":511.25,"emissiv_ceu":0.878,"n_dias":32,"vento":2.208,"tnw":23.113,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":30.744,"ur":51.656,"global":481.906,"difusa":209.467,"direta_normal":430.15,"emissiv_ceu":0.89,"n_dias":32,"vento":2.344,"tnw":23.084,"ta_ref_lst":26.15,"g_ref_lst":712.75},{"ta":29.272,"ur":59.156,"global":268.094,"difusa":153.694,"direta_normal":261.866,"emissiv_ceu":0.914,"n_dias":32,"vento":2.378,"tnw":22.987,"ta_ref_lst":26.15,"g_ref_lst":712.75}]}},{"id":"2026-03-20","nome":"Outono (Equinócio – 20/03)","icone":"🍂","resumo":[{"horario":"09h","altitude_solar_graus":34.55,"azimute_solar_graus":70.96},{"horario":"10h","altitude_solar_graus":46.86,"azimute_solar_graus":59.57},{"horario":"11h","altitude_solar_graus":57.41,"azimute_solar_graus":41.99},{"horario":"12h","altitude_solar_graus":63.89,"azimute_solar_graus":14.02},{"horario":"13h","altitude_solar_graus":63.14,"azimute_solar_graus":340.02},{"horario":"14h","altitude_solar_graus":55.64,"azimute_solar_graus":314.16},{"horario":"15h","altitude_solar_graus":44.63,"azimute_solar_graus":298.09},{"horario":"16h","altitude_solar_graus":32.12,"azimute_solar_graus":287.47},{"horario":"17h","altitude_solar_graus":18.94,"azimute_solar_graus":279.49}],"clima":{"medio":[{"ta":18.54,"ur":88.595,"global":252.519,"difusa":172.554,"direta_normal":155.229,"emissiv_ceu":0.922,"n_dias":368,"vento":1.483,"tnw":17.136,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":19.974,"ur":83.103,"global":375.717,"difusa":223.337,"direta_normal":229.557,"emissiv_ceu":0.911,"n_dias":368,"vento":1.713,"tnw":17.843,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":21.252,"ur":77.878,"global":471.133,"difusa":257.283,"direta_normal":279.405,"emissiv_ceu":0.904,"n_dias":368,"vento":1.872,"tnw":18.386,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":22.257,"ur":73.807,"global":523.489,"difusa":271.429,"direta_normal":310.56,"emissiv_ceu":0.899,"n_dias":368,"vento":1.925,"tnw":18.781,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":22.952,"ur":70.908,"global":523.533,"difusa":263.278,"direta_normal":324.831,"emissiv_ceu":0.897,"n_dias":368,"vento":1.927,"tnw":19.014,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":23.314,"ur":69.291,"global":466.073,"difusa":246.591,"direta_normal":301.261,"emissiv_ceu":0.899,"n_dias":368,"vento":1.915,"tnw":19.105,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":23.269,"ur":69.389,"global":373.005,"difusa":202.955,"direta_normal":281.411,"emissiv_ceu":0.901,"n_dias":368,"vento":1.875,"tnw":19.057,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":22.803,"ur":71.158,"global":252.848,"difusa":141.525,"direta_normal":254.659,"emissiv_ceu":0.907,"n_dias":368,"vento":1.849,"tnw":18.859,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":21.865,"ur":75.133,"global":120.06,"difusa":77.967,"direta_normal":173.626,"emissiv_ceu":0.918,"n_dias":368,"vento":1.768,"tnw":18.544,"ta_ref_lst":24.923,"g_ref_lst":546.41}],"quente":[{"ta":22.99,"ur":85.128,"global":375.974,"difusa":216.519,"direta_normal":284.93,"emissiv_ceu":0.91,"n_dias":39,"vento":1.473,"tnw":21.054,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":24.923,"ur":77.59,"global":546.41,"difusa":254.226,"direta_normal":404.274,"emissiv_ceu":0.9,"n_dias":39,"vento":1.698,"tnw":21.892,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":26.685,"ur":69.641,"global":674.615,"difusa":274.644,"direta_normal":480.401,"emissiv_ceu":0.892,"n_dias":39,"vento":2.002,"tnw":22.403,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":27.977,"ur":63.256,"global":751.769,"difusa":285.802,"direta_normal":526.213,"emissiv_ceu":0.884,"n_dias":39,"vento":2.111,"tnw":22.625,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":28.979,"ur":58.41,"global":745.949,"difusa":286.681,"direta_normal":521.302,"emissiv_ceu":0.882,"n_dias":39,"vento":2.124,"tnw":22.766,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":29.544,"ur":55.744,"global":659,"difusa":283.562,"direta_normal":459.891,"emissiv_ceu":0.886,"n_dias":39,"vento":1.995,"tnw":22.83,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":29.454,"ur":56.026,"global":531.974,"difusa":231.223,"direta_normal":435.847,"emissiv_ceu":0.89,"n_dias":39,"vento":1.979,"tnw":22.742,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":28.764,"ur":59.333,"global":371.923,"difusa":180.237,"direta_normal":367.094,"emissiv_ceu":0.898,"n_dias":39,"vento":1.868,"tnw":22.583,"ta_ref_lst":24.923,"g_ref_lst":546.41},{"ta":27.528,"ur":65.538,"global":197.385,"difusa":113.974,"direta_normal":255.291,"emissiv_ceu":0.913,"n_dias":39,"vento":1.795,"tnw":22.434,"ta_ref_lst":24.923,"g_ref_lst":546.41}]}},{"id":"2026-06-21","nome":"Inverno (Solstício – 21/06)","icone":"❄️","resumo":[{"horario":"09h","altitude_solar_graus":21.4,"azimute_solar_graus":48.75},{"horario":"10h","altitude_solar_graus":30.68,"azimute_solar_graus":37.43},{"horario":"11h","altitude_solar_graus":37.53,"azimute_solar_graus":22.99},{"horario":"12h","altitude_solar_graus":40.92,"azimute_solar_graus":5.75},{"horario":"13h","altitude_solar_graus":40.13,"azimute_solar_graus":347.66},{"horario":"14h","altitude_solar_graus":35.35,"azimute_solar_graus":331.31},{"horario":"15h","altitude_solar_graus":27.49,"azimute_solar_graus":318.06},{"horario":"16h","altitude_solar_graus":17.55,"azimute_solar_graus":307.75},{"horario":"17h","altitude_solar_graus":6.27,"azimute_solar_graus":299.69}],"clima":{"medio":[{"ta":13.55,"ur":89.367,"global":177.921,"difusa":126.829,"direta_normal":125.297,"emissiv_ceu":0.915,"n_dias":368,"vento":1.229,"tnw":12.319,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":15.383,"ur":83.867,"global":293.065,"difusa":179.152,"direta_normal":204.428,"emissiv_ceu":0.901,"n_dias":368,"vento":1.547,"tnw":13.458,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":17.072,"ur":77.704,"global":388.728,"difusa":211.593,"direta_normal":268.813,"emissiv_ceu":0.89,"n_dias":368,"vento":1.794,"tnw":14.318,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":18.41,"ur":72.253,"global":442.438,"difusa":221.485,"direta_normal":312.107,"emissiv_ceu":0.883,"n_dias":368,"vento":1.985,"tnw":14.882,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":19.247,"ur":68.652,"global":443.438,"difusa":212.971,"direta_normal":329.819,"emissiv_ceu":0.88,"n_dias":368,"vento":2.081,"tnw":15.186,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":19.705,"ur":66.908,"global":402.554,"difusa":197.017,"direta_normal":324.007,"emissiv_ceu":0.879,"n_dias":368,"vento":2.092,"tnw":15.369,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":19.85,"ur":66.641,"global":301.505,"difusa":171.779,"direta_normal":251.335,"emissiv_ceu":0.888,"n_dias":368,"vento":2.022,"tnw":15.462,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":19.541,"ur":67.818,"global":196.986,"difusa":115.953,"direta_normal":224.413,"emissiv_ceu":0.894,"n_dias":368,"vento":1.929,"tnw":15.341,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":18.595,"ur":71.549,"global":75.918,"difusa":53.002,"direta_normal":145.13,"emissiv_ceu":0.907,"n_dias":368,"vento":1.718,"tnw":14.968,"ta_ref_lst":22.013,"g_ref_lst":463.921}],"quente":[{"ta":18.653,"ur":80.395,"global":305.632,"difusa":183.095,"direta_normal":275.753,"emissiv_ceu":0.883,"n_dias":38,"vento":1.085,"tnw":16.209,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":22.013,"ur":69.132,"global":463.921,"difusa":228.352,"direta_normal":393.414,"emissiv_ceu":0.873,"n_dias":38,"vento":1.718,"tnw":17.97,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":24.668,"ur":57.263,"global":569.842,"difusa":256.235,"direta_normal":444.368,"emissiv_ceu":0.863,"n_dias":38,"vento":2.312,"tnw":18.732,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":26.284,"ur":49.868,"global":632.684,"difusa":258.005,"direta_normal":495.53,"emissiv_ceu":0.853,"n_dias":38,"vento":2.81,"tnw":18.985,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":27.187,"ur":46.447,"global":627.711,"difusa":249.262,"direta_normal":507.46,"emissiv_ceu":0.849,"n_dias":38,"vento":3.029,"tnw":19.158,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":27.513,"ur":45.447,"global":554.395,"difusa":235.782,"direta_normal":469.613,"emissiv_ceu":0.853,"n_dias":38,"vento":3.043,"tnw":19.249,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":27.492,"ur":45.895,"global":415.105,"difusa":221.752,"direta_normal":344.126,"emissiv_ceu":0.866,"n_dias":38,"vento":2.889,"tnw":19.3,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":27.039,"ur":47.974,"global":282.368,"difusa":148.589,"direta_normal":332.864,"emissiv_ceu":0.873,"n_dias":38,"vento":2.587,"tnw":19.25,"ta_ref_lst":22.013,"g_ref_lst":463.921},{"ta":25.974,"ur":51.921,"global":113.868,"difusa":79.699,"direta_normal":172.922,"emissiv_ceu":0.898,"n_dias":38,"vento":2.125,"tnw":18.97,"ta_ref_lst":22.013,"g_ref_lst":463.921}]}},{"id":"2026-09-23","nome":"Primavera (Equinócio – 23/09)","icone":"🌸","resumo":[{"horario":"09h","altitude_solar_graus":37.81,"azimute_solar_graus":68.64},{"horario":"10h","altitude_solar_graus":49.85,"azimute_solar_graus":56.12},{"horario":"11h","altitude_solar_graus":59.73,"azimute_solar_graus":36.3},{"horario":"12h","altitude_solar_graus":64.71,"azimute_solar_graus":5.53},{"horario":"13h","altitude_solar_graus":62.02,"azimute_solar_graus":332.18},{"horario":"14h","altitude_solar_graus":53.32,"azimute_solar_graus":309.02},{"horario":"15h","altitude_solar_graus":41.79,"azimute_solar_graus":294.67},{"horario":"16h","altitude_solar_graus":29.04,"azimute_solar_graus":284.91},{"horario":"17h","altitude_solar_graus":15.76,"azimute_solar_graus":277.34}],"clima":{"medio":[{"ta":17.86,"ur":85.61,"global":302.114,"difusa":207.792,"direta_normal":140.673,"emissiv_ceu":0.924,"n_dias":341,"vento":1.81,"tnw":16.101,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":19.275,"ur":80.663,"global":415.082,"difusa":256.032,"direta_normal":195.76,"emissiv_ceu":0.915,"n_dias":341,"vento":1.984,"tnw":16.821,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":20.49,"ur":76.449,"global":488.39,"difusa":285.476,"direta_normal":224.737,"emissiv_ceu":0.911,"n_dias":341,"vento":2.088,"tnw":17.396,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":21.459,"ur":73.252,"global":530.754,"difusa":290.539,"direta_normal":256.233,"emissiv_ceu":0.906,"n_dias":341,"vento":2.181,"tnw":17.847,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":22.072,"ur":71.199,"global":509.56,"difusa":271.765,"direta_normal":260.869,"emissiv_ceu":0.907,"n_dias":341,"vento":2.237,"tnw":18.105,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":22.432,"ur":70.331,"global":456.065,"difusa":254.268,"direta_normal":244.147,"emissiv_ceu":0.908,"n_dias":341,"vento":2.252,"tnw":18.285,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":22.432,"ur":70.595,"global":364.504,"difusa":212.916,"direta_normal":219.95,"emissiv_ceu":0.912,"n_dias":341,"vento":2.22,"tnw":18.296,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":21.991,"ur":72.208,"global":252.804,"difusa":150.537,"direta_normal":200.56,"emissiv_ceu":0.918,"n_dias":341,"vento":2.196,"tnw":18.095,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":21.101,"ur":75.381,"global":129.889,"difusa":87.595,"direta_normal":138.372,"emissiv_ceu":0.929,"n_dias":341,"vento":2.143,"tnw":17.713,"ta_ref_lst":25.926,"g_ref_lst":635.543}],"quente":[{"ta":23.06,"ur":75.657,"global":483.029,"difusa":248.029,"direta_normal":358.721,"emissiv_ceu":0.891,"n_dias":35,"vento":1.359,"tnw":19.832,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":25.926,"ur":63.914,"global":635.543,"difusa":281.468,"direta_normal":442.32,"emissiv_ceu":0.881,"n_dias":35,"vento":1.916,"tnw":20.802,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":28.057,"ur":54.343,"global":749.486,"difusa":290.801,"direta_normal":512.714,"emissiv_ceu":0.87,"n_dias":35,"vento":2.243,"tnw":21.209,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":29.5,"ur":48.686,"global":795.371,"difusa":289.001,"direta_normal":544.711,"emissiv_ceu":0.864,"n_dias":35,"vento":2.453,"tnw":21.498,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":30.466,"ur":45.514,"global":779.143,"difusa":272.672,"direta_normal":559.643,"emissiv_ceu":0.861,"n_dias":35,"vento":2.578,"tnw":21.731,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":31.066,"ur":42.943,"global":680.571,"difusa":273.826,"direta_normal":497.234,"emissiv_ceu":0.863,"n_dias":35,"vento":2.538,"tnw":21.751,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":31.189,"ur":42.057,"global":521.286,"difusa":238.947,"direta_normal":416.097,"emissiv_ceu":0.871,"n_dias":35,"vento":2.363,"tnw":21.667,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":30.577,"ur":44.371,"global":335.714,"difusa":167.716,"direta_normal":338.966,"emissiv_ceu":0.885,"n_dias":35,"vento":2.145,"tnw":21.466,"ta_ref_lst":25.926,"g_ref_lst":635.543},{"ta":28.96,"ur":50.257,"global":148.486,"difusa":101.01,"direta_normal":156.251,"emissiv_ceu":0.916,"n_dias":35,"vento":1.953,"tnw":21.05,"ta_ref_lst":25.926,"g_ref_lst":635.543}]}}],"ums":[{"nome":"US XAPINHAL","distrito":"BAIRRO NOVO"},{"nome":"US SANTA AMÉLIA","distrito":"PORTÃO"},{"nome":"US TANCREDO NEVES","distrito":"CIC"},{"nome":"US XAXIM","distrito":"BOQUEIRÃO"},{"nome":"US TAIZ VIVIANE MACHADO","distrito":"CIC"},{"nome":"US VITÓRIA RÉGIA","distrito":"CIC"},{"nome":"US SAMBAQUI","distrito":"BAIRRO NOVO"},{"nome":"US TAPAJÓS","distrito":"BOQUEIRÃO"},{"nome":"US BARIGUI","distrito":"CIC"},{"nome":"US DOM BOSCO","distrito":"TATUQUARA"},{"nome":"US VISITAÇÃO","distrito":"BOQUEIRÃO"},{"nome":"US BUTIATUVINHA","distrito":"SANTA FELICIDADE"},{"nome":"US SALGADO FILHO","distrito":"CAJURU"},{"nome":"US CAPANEMA","distrito":"MATRIZ"},{"nome":"US SÃO PEDRO","distrito":"BOQUEIRÃO"},{"nome":"US SALVADOR ALLENDE","distrito":"BAIRRO NOVO"},{"nome":"US CAMARGO","distrito":"CAJURU"},{"nome":"US WALDEMAR MONASTIER","distrito":"BOQUEIRÃO"},{"nome":"US CAXIMBA","distrito":"TATUQUARA"},{"nome":"US SABARÁ","distrito":"CIC"},{"nome":"US ALVORADA","distrito":"CAJURU"},{"nome":"US PILARZINHO","distrito":"SANTA FELICIDADE"},{"nome":"US JOÃO CÃNDIDO","distrito":"BAIRRO NOVO"},{"nome":"US VILA HAUER","distrito":"BOQUEIRÃO"},{"nome":"US JARDIM ALIANÇA","distrito":"BOA VISTA"},{"nome":"US SANTA FELICIDADE","distrito":"SANTA FELICIDADE"},{"nome":"US OSWALDO CRUZ","distrito":"CIC"},{"nome":"US JARDIM GABINETO","distrito":"CIC"},{"nome":"US POMPÉIA","distrito":"TATUQUARA"},{"nome":"US VILA LEONICE","distrito":"BOA VISTA"},{"nome":"US SÃO JOSÉ","distrito":"CIC"},{"nome":"US UBERABA DE CIMA","distrito":"CAJURU"},{"nome":"US SANTOS ANDRADE","distrito":"PORTÃO"},{"nome":"US VILA VERDE","distrito":"CIC"},{"nome":"US PINHEIROS","distrito":"SANTA FELICIDADE"},{"nome":"US RIO BONITO","distrito":"TATUQUARA"},{"nome":"US MONTEIRO LOBATO","distrito":"TATUQUARA"},{"nome":"US UNIÃO DAS VILAS","distrito":"SANTA FELICIDADE"},{"nome":"US MENONITAS","distrito":"BOQUEIRÃO"},{"nome":"US SÃO JOAO DEL REY","distrito":"BAIRRO NOVO"},{"nome":"US NOSSA SENHORA DO SAGRADO CORAÇÃO","distrito":"PINHEIRINHO"},{"nome":"US LOTIGUAÇU","distrito":"CAJURU"},{"nome":"US UMBARÁ II","distrito":"BAIRRO NOVO"},{"nome":"US ATUBA","distrito":"BOA VISTA"},{"nome":"US BOM PASTOR","distrito":"SANTA FELICIDADE"},{"nome":"US BAIRRO NOVO","distrito":"BAIRRO NOVO"},{"nome":"US MORADIAS SANTA RITA","distrito":"TATUQUARA"},{"nome":"US CAJURU","distrito":"CAJURU"},{"nome":"US MORADIAS BELÉM","distrito":"BOQUEIRÃO"},{"nome":"US TRINDADE","distrito":"CAJURU"},{"nome":"US VILA FELIZ","distrito":"PINHEIRINHO"},{"nome":"US SÃO MIGUEL","distrito":"CIC"},{"nome":"US IPIRANGA","distrito":"PINHEIRINHO"},{"nome":"US PARQUE INDUSTRIAL","distrito":"PINHEIRINHO"},{"nome":"US SANTA QUITÉRIA","distrito":"PORTÃO"},{"nome":"US ABAETÉ","distrito":"BOA VISTA"},{"nome":"US ABRANCHES","distrito":"BOA VISTA"},{"nome":"US ÉRICO VERÍSSIMO","distrito":"BOQUEIRÃO"},{"nome":"US PARIGOT DE SOUZA","distrito":"BAIRRO NOVO"},{"nome":"US TRINDADE II","distrito":"CAJURU"},{"nome":"US NOSSA SENHORA APARECIDA","distrito":"BAIRRO NOVO"},{"nome":"US CONCÓRDIA","distrito":"PINHEIRINHO"},{"nome":"US VILA ESPERANÇA","distrito":"BOA VISTA"},{"nome":"US OSTERNACK","distrito":"BAIRRO NOVO"},{"nome":"US SÃO BRAZ","distrito":"SANTA FELICIDADE"},{"nome":"US CAMPINA DO SIQUEIRA","distrito":"SANTA FELICIDADE"},{"nome":"US NOVA ORLEANS","distrito":"SANTA FELICIDADE"},{"nome":"US EUCALIPTOS","distrito":"BOQUEIRÃO"},{"nome":"US MARIA ANGÉLICA","distrito":"PINHEIRINHO"},{"nome":"US TINGUI","distrito":"BOA VISTA"},{"nome":"US ATENAS","distrito":"CIC"},{"nome":"US ESMERALDA","distrito":"BOQUEIRÃO"},{"nome":"US IRACEMA","distrito":"CAJURU"},{"nome":"US SÃO DOMINGOS","distrito":"CAJURU"},{"nome":"US VILA SANDRA","distrito":"CIC"},{"nome":"US PANTANAL","distrito":"BOQUEIRÃO"},{"nome":"US IRMÃ TEREZA ARAUJO","distrito":"BOQUEIRÃO"},{"nome":"US SOLITUDE","distrito":"CAJURU"},{"nome":"US NOSSA SENHORA DA LUZ","distrito":"CIC"},{"nome":"US ESTRELA","distrito":"PORTÃO"},{"nome":"US FERNANDO DE NORONHA","distrito":"BOA VISTA"},{"nome":"US CAMPO ALEGRE","distrito":"CIC"},{"nome":"US AUGUSTA","distrito":"CIC"},{"nome":"US UMBARÁ","distrito":"BAIRRO NOVO"},{"nome":"US SÃO PAULO","distrito":"CAJURU"},{"nome":"US VILA GUAÍRA","distrito":"PORTÃO"},{"nome":"US PAROLIN","distrito":"PORTÃO"},{"nome":"US CÂNDIDO PORTINARI","distrito":"CIC"},{"nome":"US FANNY LINDOIA","distrito":"PINHEIRINHO"},{"nome":"US JARDIM PARANAENSE","distrito":"BOQUEIRÃO"},{"nome":"US VILA MACHADO","distrito":"PINHEIRINHO"},{"nome":"US PALMEIRAS","distrito":"TATUQUARA"},{"nome":"US BAIRRO ALTO","distrito":"BOA VISTA"},{"nome":"US BACACHERI","distrito":"BOA VISTA"},{"nome":"US VISTA ALEGRE","distrito":"SANTA FELICIDADE"},{"nome":"US MORADIAS DA ORDEM","distrito":"TATUQUARA"},{"nome":"US VILA CLARICE","distrito":"PINHEIRINHO"},{"nome":"US AURORA","distrito":"PINHEIRINHO"},{"nome":"US VILA DIANA","distrito":"BOA VISTA"},{"nome":"US OUVIDOR PARDINHO","distrito":"MATRIZ"},{"nome":"US SANTA EFIGÊNIA","distrito":"BOA VISTA"},{"nome":"US BARREIRINHA","distrito":"BOA VISTA"},{"nome":"US CAIUÁ","distrito":"CIC"},{"nome":"US COQUEIROS","distrito":"BAIRRO NOVO"},{"nome":"US VILA LEÃO","distrito":"PINHEIRINHO"},{"nome":"US SANTA CÂNDIDA","distrito":"BOA VISTA"},{"nome":"US SANTA QUITÉRIA II","distrito":"PORTÃO"},{"nome":"US MÃE CURITIBANA","distrito":"MATRIZ"},{"nome":"US TARUMÃ","distrito":"BOA VISTA"}],"parametros":{"abs_onda_curta":0.7,"emissiv_pessoa":0.97,"albedo_solo":0.15,"albedo_parede":0.2,"emissiv_solo":0.95,"emissiv_parede":0.9,"svf_padrao":0.8},"classes_wbgt":[{"de":-99,"nome":"4 °C ou mais abaixo do limiar","cor":"#2166ac"},{"de":23.1,"nome":"3–4 °C abaixo","cor":"#4393c3"},{"de":24.1,"nome":"2–3 °C abaixo","cor":"#92c5de"},{"de":25.1,"nome":"1–2 °C abaixo","cor":"#d1e5f0"},{"de":26.1,"nome":"Até 1 °C abaixo (atenção)","cor":"#fddbc7"},{"de":27.1,"nome":"Até 1 °C acima do P98 (alerta)","cor":"#f4a582"},{"de":28.1,"nome":"1–2 °C acima do P98","cor":"#d6604d"},{"de":29.1,"nome":"2 °C ou mais acima do P98","cor":"#b2182b"}],"limiar_wbgt":27.1,"parametros_wbgt":{"diametro_globo":0.15,"emissiv_globo":0.95,"absorv_globo":0.95,"fator_vento_pedestre":0.65,"vento_min":0.5},"cenarios":[{"id":"medio","nome":"Dia médio","descricao":"Média de todos os dias da estação (2023–2026)"},{"id":"quente","nome":"Dia quente (P90)","descricao":"Dias com Tmáx da cidade ≥ P90 da estação (2023–2026)"}],"tempo_real_url":"https://raw.githubusercontent.com/douglasg1997/mapa-calor-curitiba/tempo-real/tempo_real.json","nota_fontes":"WBGT a céu aberto = 0,7·Tnw (Stull) + 0,2·Tg + 0,1·Ta; Tg pelo balanço de radiação de um globo negro de 15 cm no ambiente do pixel (ISO 7243/7726). Tmrt: modelo radiativo (SOLWEIG/VDI 3787) com LST Landsat 8/9 (2016–2025), sombra de edifícios (alturas Google Open Buildings 2.5D, 2023) e de árvores (copa Meta/WRI 1 m, transmissividade 10%), SVF e meteorologia das estações automáticas (DW CISC, 2023–2026). Limiar: P98 histórico do WBGT máximo diário de Curitiba em campo aberto (27.1 °C; INMET A807 2003–2025, mesmo cálculo do globo)."}</script>
 <script id="ums-geojson" type="application/json">{
 "type": "FeatureCollection",
-"name": "file36d04591aba",
+"name": "file288c29fc4db5",
 "xy_coordinate_resolution": 1e-06,
 "features": [
 { "type": "Feature", "properties": { "ID_NUM": 1 }, "geometry": { "type": "Polygon", "coordinates": [ [ [ -49.270046, -25.532045 ], [ -49.271051, -25.529645 ], [ -49.271117, -25.52976 ], [ -49.271555, -25.53009 ], [ -49.271749, -25.530185 ], [ -49.272232, -25.530318 ], [ -49.273336, -25.530222 ], [ -49.273819, -25.530254 ], [ -49.274246, -25.530216 ], [ -49.274615, -25.530128 ], [ -49.275882, -25.530398 ], [ -49.277609, -25.530925 ], [ -49.278604, -25.531091 ], [ -49.279469, -25.531783 ], [ -49.280125, -25.532145 ], [ -49.280445, -25.532502 ], [ -49.280609, -25.532797 ], [ -49.280877, -25.533026 ], [ -49.2812, -25.533251 ], [ -49.282397, -25.533909 ], [ -49.283267, -25.53454 ], [ -49.284418, -25.535985 ], [ -49.284962, -25.536214 ], [ -49.285365, -25.536922 ], [ -49.285515, -25.537334 ], [ -49.284208, -25.537113 ], [ -49.284078, -25.537982 ], [ -49.283567, -25.537901 ], [ -49.283751, -25.537604 ], [ -49.282421, -25.536877 ], [ -49.282727, -25.536438 ], [ -49.278649, -25.537915 ], [ -49.27835, -25.537967 ], [ -49.27784, -25.537926 ], [ -49.278172, -25.536724 ], [ -49.277557, -25.536442 ], [ -49.276653, -25.536227 ], [ -49.27728, -25.534868 ], [ -49.276131, -25.534465 ], [ -49.27611, -25.534378 ], [ -49.271789, -25.532891 ], [ -49.271938, -25.532563 ], [ -49.270046, -25.532045 ] ] ] } },
@@ -310713,6 +310788,7 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
   var mediana = NaN, medianaW = NaN;  // só informativas (painel)
   var map, mapaPix, W, H, camadas = {};
   var popup = null, ultimoClique = null, timer = null;
+  var ctlPainel = null, ctlLegenda = null, ctlCamadas = null, basesMapa = null, sobreposMapa = null, layoutMovel = null;
 
   function emTempoReal() { return estado.modo === 1 && TR !== null; }
   function met() { // condições meteorológicas da seleção atual
@@ -310862,10 +310938,15 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     document.getElementById("v-vt").textContent = fmt(m.vento, 1) + " m/s";
     document.getElementById("v-tnw").textContent = fmt(m.tnw, 1) + " °C";
     document.getElementById("leg-abs").style.display = estado.escala === 1 ? "none" : "";
+    document.getElementById("fh-faixa").style.display = estado.escala === 1 ? "" : "none";
     document.getElementById("leg-rel").style.display = estado.escala === 1 ? "" : "none";
     document.getElementById("l-dias").textContent = emTempoReal() ? "Estações usadas (Curitiba)" : "Dias na base meteorológica";
     document.getElementById("v-dias").textContent = emTempoReal() ? TR.cidade.n_estacoes + " estações" : m.n_dias + " dias";
     document.getElementById("l-vt").textContent = emTempoReal() ? "Vento (mediana das estações)" : "Vento (estações)";
+    var dd = META.datas[estado.d], wbTxt = "WBGT mediano <b>" + fmt(medianaW, 1) + " °C</b>";
+    document.getElementById("folha-resumo").innerHTML = emTempoReal()
+      ? "⏱ Tempo real · " + esc(TR.referencia) + "<br>" + wbTxt
+      : dd.icone + " " + esc(dd.nome.split(" (")[0]) + " · " + esc(META.cenarios[estado.c].nome) + " · <b>" + META.horas[estado.h] + "</b><br>" + wbTxt;
   }
 
   function conteudoPopup(idx) {
@@ -310925,7 +311006,8 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
   function montarControles() {
     var ctl = L.control({ position: "topleft" });
     ctl.onAdd = function () {
-      var div = L.DomUtil.create("div", "painel");
+      var div = L.DomUtil.create("div", "painel painel-principal");
+      div.id = "painel-principal";
       div.style.minWidth = "275px"; div.style.maxWidth = "300px";
       var opts = META.datas.map(function (d, i) { return "<option value='" + i + "'>" + d.icone + " " + d.nome + "</option>"; }).join("");
       div.innerHTML =
@@ -310957,7 +311039,8 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
         "<tr><td>Tmrt mediana da cidade</td><td id='v-tm'>--</td></tr>" +
         "<tr><td id='l-dias'>Dias na base meteorológica</td><td id='v-dias' style='font-weight:normal'>--</td></tr>" +
         "</table><div id='tr-lista' style='display:none'></div>" +
-        "<div class='dica'>Clique em qualquer ponto do mapa para inspecionar o pixel (30 m).</div>";
+        "<div class='dica'>Clique (ou toque) em qualquer ponto do mapa para inspecionar o pixel (30 m).</div>" +
+        "<div class='fontes-movel' id='fontes-movel'></div>";
       L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       return div;
@@ -311003,7 +311086,10 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     var leg = L.control({ position: "bottomright" });
     leg.onAdd = function () {
       var div = L.DomUtil.create("div", "painel legenda");
-      var html = "<div id='leg-rel'><div class='tit'>Exposição ao calor – WBGT</div>" +
+      div.id = "legenda";
+      var faixa = "<div class='leg-faixa'><div class='cores'>" + WBGT_CLASSES.map(function (c) { return "<span style='background:" + rgb(c.cor) + "'></span>"; }).join("") +
+        "</div><div class='rot'><span>&lt; " + fmt(CAT[1].de, 1) + "</span><span>P98 " + fmt(LIMIAR, 1) + "</span><span>≥ " + fmt(CAT[CAT.length - 1].de, 1) + " °C</span></div></div>";
+      var html = "<div class='leg-cab' id='leg-cab'><span>Legenda</span><span class='seta' id='leg-seta'>▾</span></div>" + faixa + "<div class='leg-corpo'><div id='leg-rel'><div class='tit'>Exposição ao calor – WBGT</div>" +
         "<div class='sub'>Índice de bulbo úmido–termômetro de globo a céu aberto. Classes fixas de " + fmt(CAT[2].de - CAT[1].de, 0) + " °C ancoradas no P98 histórico do WBGT máximo diário de Curitiba (" + fmt(LIMIAR, 1) + " °C).</div>";
       WBGT_CLASSES.forEach(function (c) { html += "<div class='item'><span class='cor' style='background:" + rgb(c.cor) + "'></span>" + c.nome + " (" + c.faixa + ")</div>"; });
       html += "</div><div id='leg-abs' style='display:none'><div class='tit'>Temperatura Radiante Média (Tmrt)</div>" +
@@ -311011,12 +311097,21 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
       TMRT_CLASSES.forEach(function (c) { html += "<div class='item'><span class='cor' style='background:" + rgb(c.cor) + "'></span>" + c.faixa + "</div>"; });
       html += "</div><div class='bloco'><div class='tit'>Sombra no pixel (30 m)</div>";
       SOMBRA_CLASSES.forEach(function (c) { html += "<div class='item'><span class='cor' style='background:rgba(" + COR_SOMBRA.join(",") + "," + c.alfa + ")'></span>" + c.rot + "</div>"; });
-      div.innerHTML = html + "</div>";
+      div.innerHTML = html + "</div></div>";
+      L.DomEvent.disableClickPropagation(div);
       L.DomEvent.disableScrollPropagation(div);
       return div;
     };
     leg.addTo(map);
-    document.getElementById("rodape").innerHTML = esc(META.nota_fontes);
+    ctlPainel = ctl; ctlLegenda = leg;
+    var rod = document.getElementById("rodape");
+    function rodapeAberto(a) { rod.classList.toggle("fechado", !a); document.getElementById("rodape-seta").textContent = a ? "▾" : "▸"; }
+    rodapeAberto(window.innerHeight >= 820);
+    document.getElementById("rodape-cab").addEventListener("click", function () { rodapeAberto(rod.classList.contains("fechado")); });
+    document.getElementById("fh-faixa").innerHTML = document.querySelector("#legenda .leg-faixa").outerHTML;   // faixa de cores na gaveta (celular)
+    document.getElementById("leg-cab").addEventListener("click", function () { legendaAberta(document.getElementById("legenda").classList.contains("fechada")); });
+    document.getElementById("rodape-txt").innerHTML = esc(META.nota_fontes);
+    document.getElementById("fontes-movel").innerHTML = document.getElementById("rodape-txt").innerHTML;
   }
 
   // ---------------- Tempo real (tempo_real.js gerado por tempo_real/atualizar_tempo_real.R) ----------------
@@ -311037,8 +311132,10 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     document.getElementById("bloco-tr").style.display = m === 1 ? "" : "none";
     document.getElementById("tr-lista").style.display = m === 1 ? "" : "none";
     if (trCamada) { if (m === 1) trCamada.addTo(map); else map.removeLayer(trCamada); }
-    document.getElementById("rodape").innerHTML = esc(META.nota_fontes) + (m === 1 ? " <b>Tempo real:</b> estações do DW CISC (média dos últimos " +
+    document.getElementById("rodape-txt").innerHTML = esc(META.nota_fontes) + (m === 1 ? " <b>Tempo real:</b> estações do DW CISC (média dos últimos " +
       (TR ? TR.janela_media_min : 30) + " min); dados ausentes do Open-Meteo ou da mediana das estações; marcadores = WBGT em campo aberto em cada estação, pixels = mesmas condições aplicadas ao ambiente de cada pixel." : "");
+    document.getElementById("fontes-movel").innerHTML = document.getElementById("rodape-txt").innerHTML;
+    document.getElementById("fh-prev").style.display = document.getElementById("fh-next").style.display = m === 1 ? "none" : "";
     render(); atualizarStatusTR();
   }
   function minutosDesde(iso) { return Math.round((Date.now() - new Date(iso).getTime()) / 60000); }
@@ -311092,7 +311189,7 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     TR.estacoes.forEach(function (e) {
       var cor = e.wbgt === null ? [158, 158, 158] : WBGT_CLASSES[classe(WBGT_CLASSES, e.wbgt)].cor;
       var mk = L.circleMarker([e.lat, e.lon], { radius: 9, color: "#212121", weight: 1.5, fillColor: rgb(cor), fillOpacity: 1, bubblingMouseEvents: false })
-        .bindPopup(function () { return popupEstacao(e); }, { maxWidth: 340 })
+        .bindPopup(function () { return popupEstacao(e); }, opcoesPopup())
         .bindTooltip(e.wbgt === null ? "—" : fmt(e.wbgt, 1), { permanent: true, direction: "top", offset: [0, -8], className: "tr-tip" });
       mk.addTo(trCamada); marcas[e.id] = mk;
     });
@@ -311110,7 +311207,7 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     var lista = document.getElementById("tr-lista");
     lista.innerHTML = html + "</table>";
     Array.prototype.forEach.call(lista.querySelectorAll("tr[data-id]"), function (tr) {
-      tr.addEventListener("click", function () { var mk = marcas[this.getAttribute("data-id")]; map.setView(mk.getLatLng(), Math.max(map.getZoom(), 13)); mk.openPopup(); });
+      tr.addEventListener("click", function () { var mk = marcas[this.getAttribute("data-id")]; if (layoutMovel) folhaAberta(false); map.setView(mk.getLatLng(), Math.max(map.getZoom(), 13)); mk.openPopup(); });
     });
     if (estado.modo === 1) trCamada.addTo(map);
   }
@@ -311137,6 +311234,46 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     document.body.appendChild(s);
   }
 
+  // ---------------- Layout: desktop x celular ----------------
+  var MQ_MOVEL = "(max-width: 700px), (max-height: 500px)";   // celular em pé ou deitado
+  function ehMovel() { return window.matchMedia ? window.matchMedia(MQ_MOVEL).matches : (window.innerWidth <= 700 || window.innerHeight <= 500); }
+  function opcoesPopup() {
+    var w = window.innerWidth, h = document.getElementById("map").clientHeight;
+    return ehMovel()
+      ? { maxWidth: Math.min(340, w - 40), minWidth: Math.min(240, w - 60), maxHeight: Math.max(150, h - 130),
+          autoPanPaddingTopLeft: [10, 70], autoPanPaddingBottomRight: [10, 10] }
+      : { maxWidth: 360, autoPanPadding: [20, 20] };
+  }
+  function folhaAberta(abrir) {
+    var f = document.getElementById("folha");
+    f.classList.toggle("recolhida", !abrir);
+    document.getElementById("fh-abrir").textContent = abrir ? "Fechar" : "Controles";
+  }
+  function legendaAberta(abrir) {
+    document.getElementById("legenda").classList.toggle("fechada", !abrir);
+    document.getElementById("leg-seta").textContent = abrir ? "▾" : "▸";
+  }
+  function aplicarLayout() {
+    var movel = ehMovel();
+    if (movel === layoutMovel) return;
+    layoutMovel = movel;
+    document.body.classList.toggle("movel", movel);
+    var cantos = map._controlCorners, painel = ctlPainel.getContainer(), leg = ctlLegenda.getContainer();
+    if (ctlCamadas) map.removeControl(ctlCamadas);           // camadas: recolhidas num ícone no celular
+    ctlCamadas = L.control.layers(basesMapa, sobreposMapa, { collapsed: movel, position: "topright" }).addTo(map);
+    if (movel) {
+      document.getElementById("folha-corpo").appendChild(painel);
+      document.getElementById("folha-corpo").appendChild(leg);   // legenda completa no fim da gaveta
+      legendaAberta(true); folhaAberta(true);
+    } else {
+      cantos.topleft.appendChild(painel);
+      cantos.bottomright.insertBefore(leg, cantos.bottomright.firstChild);
+      legendaAberta(true);
+    }
+    if (popup && map.hasLayer(popup)) map.closePopup(popup);
+    setTimeout(function () { map.invalidateSize({ pan: false }); }, 50);
+  }
+
   function iniciarMapa() {
     var b = META.bounds;
     map = L.map("map", { zoomControl: true }).fitBounds(b);
@@ -311150,20 +311287,30 @@ BX9XkIhI43xcC8DUu6dfARp+BajYFaBhV4CGXQEKdgVouBXY5AIjOtzx</script>
     camadas.sombra.ov = new CanvasOverlay(camadas.sombra.canvas, b, { opacity: 0.85 });
 
     var umsLayer = L.geoJSON(UMS_GEO, { interactive: false, style: { color: "#5c2d16", weight: 1.2, fill: false, opacity: 0.9 } }).addTo(map);
-    L.control.layers(
-      { "Google Ruas": baseRuas, "OpenStreetMap": baseOSM, "Google Satélite (Híbrido)": baseSat },
-      { "Áreas de Abrangência UMS": umsLayer },
-      { collapsed: false, position: "topright" }
-    ).addTo(map);
+    basesMapa = { "Google Ruas": baseRuas, "OpenStreetMap": baseOSM, "Google Satélite (Híbrido)": baseSat };
+    sobreposMapa = { "Áreas de Abrangência UMS": umsLayer };
     L.control.scale({ imperial: false, position: "bottomleft" }).addTo(map);
 
     map.on("click", function (e) {
       var idx = indiceDe(e.latlng.lat, e.latlng.lng);
       ultimoClique = { idx: idx, latlng: e.latlng };
-      popup = L.popup({ maxWidth: 360 }).setLatLng(e.latlng).setContent(conteudoPopup(idx)).openOn(map);
+      if (layoutMovel) folhaAberta(false);
+      popup = L.popup(opcoesPopup()).setLatLng(e.latlng).setContent(conteudoPopup(idx)).openOn(map);
     });
 
     montarControles();
+    aplicarLayout();
+    if (window.matchMedia) {
+      var mq = window.matchMedia(MQ_MOVEL);
+      if (mq.addEventListener) mq.addEventListener("change", aplicarLayout); else if (mq.addListener) mq.addListener(aplicarLayout);
+    }
+    if (window.ResizeObserver) new ResizeObserver(function () { map.invalidateSize({ pan: false }); }).observe(document.getElementById("map"));
+    document.getElementById("folha-cab").addEventListener("click", function (ev) {
+      if (ev.target.closest && ev.target.closest("#fh-prev, #fh-next")) return;
+      folhaAberta(document.getElementById("folha").classList.contains("recolhida"));
+    });
+    document.getElementById("fh-prev").addEventListener("click", function () { document.getElementById("b-prev").click(); });
+    document.getElementById("fh-next").addEventListener("click", function () { document.getElementById("b-next").click(); });
     render();
     if (TR) desenharEstacoes();
     carregarTR();
